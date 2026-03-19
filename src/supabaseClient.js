@@ -19,7 +19,7 @@ const { createClient } = require('@supabase/supabase-js');
 //const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
+console.log("URL:", import.meta.env.VITE_SUPABASE_URL); // ¿Sale la URL o sale undefined?
 if (!supabaseUrl || !supabaseKey) {
   console.error("❌ ERROR: No se pudieron cargar las variables de entorno.");
   console.log("Revisando process.env.VITE_SUPABASE_URL:", process.env.VITE_SUPABASE_URL);
