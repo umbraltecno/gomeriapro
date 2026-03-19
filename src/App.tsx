@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient'
 import { 
   LayoutDashboard, 
   Package, 
@@ -3149,7 +3148,7 @@ const Reports = () => {
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/dashboard/stats').then(res => res.json()).then(setStats);
@@ -3223,17 +3222,33 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-zinc-50 text-zinc-900 font-sans">
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside className={cn(
         "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-zinc-200 transition-transform lg:relative lg:translate-x-0",
         !isSidebarOpen && "-translate-x-full"
       )}>
         <div className="flex flex-col h-full">
-          <div className="p-6 flex items-center gap-3">
-            <div className="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center">
-              <Wrench className="text-white" size={18} />
+          <div className="p-6 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center">
+                <Wrench className="text-white" size={18} />
+              </div>
+              <h1 className="text-xl font-bold tracking-tight">GomeriaPro</h1>
             </div>
-            <h1 className="text-xl font-bold tracking-tight">GomeriaPro</h1>
+            <button 
+              onClick={() => setIsSidebarOpen(false)}
+              className="lg:hidden p-2 text-zinc-400 hover:text-zinc-900"
+            >
+              <X size={20} />
+            </button>
           </div>
 
           <nav className="flex-1 px-4 space-y-1">
@@ -3243,7 +3258,10 @@ export default function App() {
                 icon={tab.icon}
                 label={tab.label}
                 active={activeTab === tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setIsSidebarOpen(false);
+                }}
               />
             ))}
           </nav>
