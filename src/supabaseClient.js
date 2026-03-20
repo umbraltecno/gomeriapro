@@ -24,5 +24,9 @@ if (!supabaseUrl || !supabaseKey) {
   console.error("❌ ERROR: No se pudieron cargar las variables de entorno.");
   console.log("Revisando process.env.VITE_SUPABASE_URL:", process.env.VITE_SUPABASE_URL);
 }
+console.log("Intentando conectar a:", import.meta.env.VITE_SUPABASE_URL);
 
+if (!import.meta.env.VITE_SUPABASE_URL) {
+  console.error("¡ERROR! La URL de Supabase es undefined. Revisa tu archivo .env.local");
+}
 export const supabase = createClient(supabaseUrl, supabaseKey);
